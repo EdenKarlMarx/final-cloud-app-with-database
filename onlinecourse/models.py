@@ -96,6 +96,10 @@ class Enrollment(models.Model):
 
 
 # <HINT> Create a Question Model with:
+class Question(models.Model):
+    Lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    content = models.CharField(max_length=200)
+    grade = models.IntegerField(default=50)
     # Used to persist question content for a course
     # Has a One-To-Many (or Many-To-Many if you want to reuse questions) relationship with course
     # Has a grade point for each question
@@ -123,12 +127,14 @@ class Enrollment(models.Model):
     # Indicate if this choice of the question is a correct one or not
     # Other fields and methods you would like to design
 # class Choice(models.Model):
-
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    content = models.CharField(max_length=200)
+    is_correct = models.BooleanField(default=False)
 # <HINT> The submission model
 # One enrollment could have multiple submission
 # One submission could have multiple choices
 # One choice could belong to multiple submissions
-#class Submission(models.Model):
-#    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
-#    choices = models.ManyToManyField(Choice)
-#    Other fields and methods you would like to design
+class Submission(models.Model):
+    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
+    chocies = models.ManyToManyField(Choice)
